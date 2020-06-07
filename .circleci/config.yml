@@ -1,14 +1,29 @@
-orbs: # declare what orbs we are going to use
-  node: circleci/node@2.0.2 # the node orb provides common node-related configuration 
-
-version: 2.1 # using 2.1 provides access to orbs and other features
-
-workflows:
-  matrix-tests:
-    jobs:
-      - node/test:
-          version: 13.11.0
-      - node/test:
-          version: 12.16.0
-      - node/test:
-          version: 10.19.0
+version: 2
+jobs:
+    build:
+        branches:
+            only:
+                - master
+            ignore:
+                - dev
+        docker:
+            - image: 'circleci/node:8'
+        working_directory: ~/repo
+        
+        steps:
+        - checkout
+        - restore_cache:
+            keys:
+                - 'v1-dependencies-{{ checksum "package.json" }}'
+                - v1-dependencies-
+        - run: 'npm install'
+        - save_cache:
+            paths:
+                - node_modules
+            key: 'v1-dependencies-{{ checksum "package.json" }}'
+        - run:
+            name: 'Build Project'
+            command: 'npm run build'
+        - run:
+            name: 'Deploy to Firebase Hosting'
+            command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
