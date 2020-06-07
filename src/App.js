@@ -7,6 +7,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <h1>Code Busters</h1>
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Hola!
@@ -18,6 +19,14 @@ function App() {
           rel="noopener noreferrer"
         >
           Learn React
+        </a>
+        <a
+          className="App-link"
+          href="https://www.atleticodemadrid.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Mejor club
         </a>
       </header>
     </div>
